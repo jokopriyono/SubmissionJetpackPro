@@ -1,4 +1,4 @@
-package com.jo.submission.jetpackpro.ui.home
+package com.jo.submission.jetpackpro.ui.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.jo.submission.jetpackpro.R
 
-class HomeFragment : Fragment() {
+class TvShowFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var tvShowViewModel: TvShowViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(this, Observer {
+        tvShowViewModel =
+            ViewModelProviders.of(this).get(TvShowViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_tv_show, container, false)
+        val textView: TextView = root.findViewById(R.id.text_dashboard)
+        tvShowViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root
