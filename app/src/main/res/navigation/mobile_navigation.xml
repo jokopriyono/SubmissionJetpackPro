@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_movies"
-        android:name="com.jo.submission.jetpackpro.ui.home.MoviesFragment"
+        android:name="com.jo.submission.jetpackpro.ui.main.movies.MoviesFragment"
         android:label="@string/title_movies"
         tools:layout="@layout/fragment_movies" />
 
     <fragment
         android:id="@+id/navigation_tv_show"
-        android:name="com.jo.submission.jetpackpro.ui.dashboard.TvShowFragment"
+        android:name="com.jo.submission.jetpackpro.ui.main.tvshow.TvShowFragment"
         android:label="@string/title_tv_show"
         tools:layout="@layout/fragment_tv_show" />
 </navigation>
