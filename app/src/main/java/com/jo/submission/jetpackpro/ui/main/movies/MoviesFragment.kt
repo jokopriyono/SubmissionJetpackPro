@@ -34,8 +34,7 @@ class MoviesFragment : Fragment(), MovieListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_movies, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_movies, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
