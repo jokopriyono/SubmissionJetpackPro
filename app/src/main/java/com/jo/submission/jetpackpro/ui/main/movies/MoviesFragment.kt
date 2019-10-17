@@ -27,7 +27,7 @@ class MoviesFragment : Fragment(), MovieListener {
         }
     }
 
-    private lateinit var viewModel: MainViewModel
+    lateinit var viewModel: MainViewModel
     private lateinit var movieAdapter: MovieAdapter
 
     override fun onCreateView(

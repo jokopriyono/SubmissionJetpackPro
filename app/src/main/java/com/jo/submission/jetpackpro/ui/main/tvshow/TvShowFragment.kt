@@ -17,7 +17,17 @@ import kotlinx.android.synthetic.main.fragment_tv_show.*
 import org.jetbrains.anko.support.v4.startActivity
 
 class TvShowFragment : Fragment(), TvShowListener {
-    private lateinit var viewModel: MainViewModel
+    companion object {
+        @JvmStatic
+        fun newInstance(): TvShowFragment {
+            val tvShowFragment = TvShowFragment()
+            val args = Bundle()
+            tvShowFragment.arguments = args
+            return tvShowFragment
+        }
+    }
+
+    lateinit var viewModel: MainViewModel
 
     private lateinit var tvShowAdapter: TvShowAdapter
     override fun onCreateView(
