@@ -1,7 +1,6 @@
 package com.jo.submission.jetpackpro.ui.main.movies
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +8,13 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.jo.submission.jetpackpro.R
 import com.jo.submission.jetpackpro.model.Movie
+import com.jo.submission.jetpackpro.ui.detail.DetailActivity
 import com.jo.submission.jetpackpro.ui.main.MainViewModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movies.*
+import org.jetbrains.anko.support.v4.startActivity
 
 class MoviesFragment : Fragment(), MovieListener {
     companion object {
@@ -34,9 +34,8 @@ class MoviesFragment : Fragment(), MovieListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_movies, container, false)
-    }
+    ): View? =
+        inflater.inflate(R.layout.fragment_movies, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -51,16 +50,13 @@ class MoviesFragment : Fragment(), MovieListener {
     }
 
     override fun onMovieClick(movie: Movie) {
-
+        startActivity<DetailActivity>(DetailActivity.INTENT_DATA to movie)
     }
 
     override fun onLoadImage(target: ImageView, posterPath: String) {
-        val l = "http://image.tmdb.org/t/p/w500$posterPath"
-        Log.d("pesan", l)
-        Glide.with(this)
-            .load("http://image.tmdb.org/t/p/w500$posterPath")
-            .centerInside()
-            .apply(RequestOptions.placeholderOf(R.drawable.ic_loading).error(R.drawable.ic_error))
+        Picasso.get().load("https://image.tmdb.org/t/p/w500$posterPath")
+            .placeholder(R.drawable.ic_loading)
+            .error(R.drawable.ic_movies_black)
             .into(target)
     }
 }

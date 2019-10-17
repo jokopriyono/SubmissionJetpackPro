@@ -1,8 +1,11 @@
 package com.jo.submission.jetpackpro.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class TvShow(
     @SerializedName("backdrop_path")
     val backdropPath: String?,
@@ -30,4 +33,4 @@ data class TvShow(
     val voteAverage: Double,
     @SerializedName("vote_count")
     val voteCount: Int
-)
+) : Parcelable
