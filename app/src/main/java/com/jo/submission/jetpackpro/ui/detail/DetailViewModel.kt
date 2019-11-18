@@ -26,7 +26,7 @@ class DetailViewModel(
 
             val urlPoster = BuildConfig.IMAGE_URL + value?.posterPath?.substring(1)
             val urlBackdrop = BuildConfig.IMAGE_URL + value?.backdropPath?.substring(1)
-            getNavigator().showTitleAndImages("${title.value}", urlPoster, urlBackdrop)
+            getNavigator()?.showTitleAndImages("${title.value}", urlPoster, urlBackdrop)
 
             field = value
         }
@@ -38,7 +38,7 @@ class DetailViewModel(
 
             val urlPoster = BuildConfig.IMAGE_URL + value?.posterPath?.substring(1)
             val urlBackdrop = BuildConfig.IMAGE_URL + value?.backdropPath?.substring(1)
-            getNavigator().showTitleAndImages("${title.value}", urlPoster, urlBackdrop)
+            getNavigator()?.showTitleAndImages("${title.value}", urlPoster, urlBackdrop)
 
             field = value
         }

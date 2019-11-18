@@ -1,22 +1,39 @@
 package com.jo.submission.jetpackpro.ui.main.movies
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jo.submission.jetpackpro.BR
+import com.jo.submission.jetpackpro.BuildConfig
 import com.jo.submission.jetpackpro.R
-import com.jo.submission.jetpackpro.model.Movie
+import com.jo.submission.jetpackpro.data.model.api.Movie
+import com.jo.submission.jetpackpro.databinding.FragmentMoviesBinding
+import com.jo.submission.jetpackpro.ui.base.BaseFragment
 import com.jo.submission.jetpackpro.ui.detail.DetailActivity
+import com.jo.submission.jetpackpro.ui.main.MainNavigator
 import com.jo.submission.jetpackpro.ui.main.MainViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movies.*
 import org.jetbrains.anko.support.v4.startActivity
+import javax.inject.Inject
 
-class MoviesFragment : Fragment(), MovieListener {
+class MoviesFragment : BaseFragment<FragmentMoviesBinding, MainViewModel>(), MainNavigator,
+    MovieListener {
+
+    @Inject
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
+
+    override fun getLayoutId() = R.layout.fragment_movies
+
+    override fun getBindingVariable() = BR.viewModel
+
+    override fun getViewModel() =
+        ViewModelProviders.of(this, mViewModelFactory).get(MainViewModel::class.java)
+
     companion object {
         @JvmStatic
         fun newInstance(): MoviesFragment {
@@ -27,25 +44,33 @@ class MoviesFragment : Fragment(), MovieListener {
         }
     }
 
-    lateinit var viewModel: MainViewModel
     private lateinit var movieAdapter: MovieAdapter
+    private lateinit var mFragmentMoviesBinding: FragmentMoviesBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_movies, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getViewModel().setNavigator(this)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         activity?.let {
-            viewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
-            movieAdapter = MovieAdapter(viewModel.movies, this)
-
             recycler_movie.layoutManager = LinearLayoutManager(it)
-            recycler_movie.setHasFixedSize(true)
-            recycler_movie.adapter = movieAdapter
+            getViewModel().moviess.observe(this, Observer { response ->
+                response?.let { data ->
+
+                    movieAdapter = MovieAdapter(data.movies, this)
+
+                    recycler_movie.setHasFixedSize(true)
+                    recycler_movie.adapter = movieAdapter
+                }
+            })
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mFragmentMoviesBinding = getViewDataBinding()
     }
 
     override fun onMovieClick(movie: Movie) {
@@ -53,9 +78,13 @@ class MoviesFragment : Fragment(), MovieListener {
     }
 
     override fun onLoadImage(target: ImageView, posterPath: String) {
-        Picasso.get().load("https://image.tmdb.org/t/p/w500$posterPath")
+        Picasso.get().load(BuildConfig.IMAGE_URL + posterPath.substring(1))
             .placeholder(R.drawable.ic_loading)
             .error(R.drawable.ic_movies_black)
             .into(target)
+    }
+
+    override fun handleError(throwable: Throwable?) {
+
     }
 }

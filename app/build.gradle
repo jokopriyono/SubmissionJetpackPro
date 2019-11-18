@@ -19,14 +19,14 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
             buildConfigField("String", "IMAGE_URL", "\"https://image.tmdb.org/t/p/w500/\"")
             buildConfigField("String", "API_KEY", "\"4e017aafa0c4da4d663bc40fa6d6afe0\"")
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/d\"")
             buildConfigField("String", "IMAGE_URL", "\"https://image.tmdb.org/t/p/w500/\"")
             buildConfigField("String", "API_KEY", "\"4e017aafa0c4da4d663bc40fa6d6afe0\"")
         }
@@ -96,7 +96,6 @@ dependencies {
     implementation "com.amitshekhar.android:rx2-android-networking:$rootProject.rx2FastAndroidNetworking"
 
     // dependency injection
-    implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
     implementation "com.google.dagger:dagger-android-support:$rootProject.dagger2Version"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.dagger2Version"
@@ -126,8 +125,4 @@ dependencies {
 
 androidExtensions {
     experimental = true
-}
-
-kapt {
-    generateStubs = true
 }

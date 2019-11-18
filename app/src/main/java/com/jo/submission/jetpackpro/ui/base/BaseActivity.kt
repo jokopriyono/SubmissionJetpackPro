@@ -2,12 +2,12 @@ package com.jo.submission.jetpackpro.ui.base
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import dagger.android.AndroidInjection
+import dagger.android.support.DaggerAppCompatActivity
 
-abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity(),
+abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : DaggerAppCompatActivity(),
     BaseFragment.Callback {
 
     lateinit var mViewDataBinding: T

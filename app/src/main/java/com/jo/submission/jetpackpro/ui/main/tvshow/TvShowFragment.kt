@@ -1,22 +1,35 @@
 package com.jo.submission.jetpackpro.ui.main.tvshow
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.jo.submission.jetpackpro.BR
 import com.jo.submission.jetpackpro.R
+import com.jo.submission.jetpackpro.databinding.FragmentTvShowBinding
 import com.jo.submission.jetpackpro.model.TvShow
+import com.jo.submission.jetpackpro.ui.base.BaseFragment
 import com.jo.submission.jetpackpro.ui.detail.DetailActivity
+import com.jo.submission.jetpackpro.ui.main.MainNavigator
 import com.jo.submission.jetpackpro.ui.main.MainViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_tv_show.*
 import org.jetbrains.anko.support.v4.startActivity
+import javax.inject.Inject
 
-class TvShowFragment : Fragment(), TvShowListener {
+class TvShowFragment : BaseFragment<FragmentTvShowBinding, MainViewModel>(), TvShowListener,
+    MainNavigator {
+
+    @Inject
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
+
+    override fun getLayoutId() = R.layout.fragment_tv_show
+
+    override fun getBindingVariable() = BR.viewModel
+
+    override fun getViewModel(): MainViewModel =
+        ViewModelProviders.of(this, mViewModelFactory).get(MainViewModel::class.java)
+
     companion object {
         @JvmStatic
         fun newInstance(): TvShowFragment {
@@ -27,16 +40,15 @@ class TvShowFragment : Fragment(), TvShowListener {
         }
     }
 
-    lateinit var viewModel: MainViewModel
-
     private lateinit var tvShowAdapter: TvShowAdapter
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_tv_show, container, false)
+    private lateinit var mFragmentTvShowBinding: FragmentTvShowBinding
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getViewModel().setNavigator(this)
+    }
+
+    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         activity?.let {
             viewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
@@ -46,6 +58,11 @@ class TvShowFragment : Fragment(), TvShowListener {
             recycler_tv_show.setHasFixedSize(true)
             recycler_tv_show.adapter = tvShowAdapter
         }
+    }*/
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mFragmentTvShowBinding = getViewDataBinding()
     }
 
     override fun onTvShowClick(tvShow: TvShow) {
@@ -57,5 +74,9 @@ class TvShowFragment : Fragment(), TvShowListener {
             .placeholder(R.drawable.ic_loading)
             .error(R.drawable.ic_movies_black)
             .into(target)
+    }
+
+    override fun handleError(throwable: Throwable?) {
+
     }
 }

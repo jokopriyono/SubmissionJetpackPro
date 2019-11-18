@@ -1,21 +1,18 @@
 package com.jo.submission.jetpackpro
 
-import android.app.Activity
 import android.app.Application
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.interceptors.HttpLoggingInterceptor
 import com.jo.submission.jetpackpro.di.component.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class MvvmApp : Application(), HasActivityInjector {
+class MvvmApp : Application(), HasAndroidInjector {
 
     @Inject
-    lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
-    override fun activityInjector(): AndroidInjector<Activity> = activityDispatchingAndroidInjector
+    lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     override fun onCreate() {
         super.onCreate()
@@ -30,4 +27,6 @@ class MvvmApp : Application(), HasActivityInjector {
             AndroidNetworking.enableLogging(HttpLoggingInterceptor.Level.BODY)
         }
     }
+
+    override fun androidInjector(): AndroidInjector<Any> = activityDispatchingAndroidInjector
 }

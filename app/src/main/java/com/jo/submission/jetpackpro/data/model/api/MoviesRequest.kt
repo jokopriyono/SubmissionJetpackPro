@@ -7,10 +7,10 @@ object MoviesRequest {
         @SerializedName("api_key")
         val apiKey: String,
         @SerializedName("language")
-        val language: String?,
+        val language: String? = null,
         @SerializedName("page")
-        val page: String?,
+        val page: String? = null,
         @SerializedName("region")
-        val region: String?
+        val region: String? = null
     )
 }

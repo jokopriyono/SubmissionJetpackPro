@@ -7,10 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jo.submission.jetpackpro.R
-import com.jo.submission.jetpackpro.model.MoviesModel
+import com.jo.submission.jetpackpro.data.model.api.Movie
 
 class MovieAdapter(
-    private val movies: MoviesModel,
+    private val movies: List<Movie>,
     private val movieListener: MovieListener
 ) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
@@ -19,10 +19,10 @@ class MovieAdapter(
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = movies.results.size
+    override fun getItemCount(): Int = movies.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val m = movies.results[position]
+        val m = movies[position]
         holder.txtTitle.text = m.originalTitle
         holder.txtDesc.text = m.overview
         holder.txtDate.text = m.releaseDate
