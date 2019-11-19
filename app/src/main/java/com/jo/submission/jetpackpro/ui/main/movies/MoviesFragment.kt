@@ -56,7 +56,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding, MainViewModel>(), Mai
         super.onActivityCreated(savedInstanceState)
         activity?.let {
             recycler_movie.layoutManager = LinearLayoutManager(it)
-            getViewModel().moviess.observe(this, Observer { response ->
+            getViewModel().movies.observe(this, Observer { response ->
                 response?.let { data ->
 
                     movieAdapter = MovieAdapter(data.movies, this)

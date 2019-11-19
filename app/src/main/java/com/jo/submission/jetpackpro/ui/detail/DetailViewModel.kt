@@ -3,8 +3,8 @@ package com.jo.submission.jetpackpro.ui.detail
 import androidx.lifecycle.MutableLiveData
 import com.jo.submission.jetpackpro.BuildConfig
 import com.jo.submission.jetpackpro.data.DataManager
-import com.jo.submission.jetpackpro.model.Movie
-import com.jo.submission.jetpackpro.model.TvShow
+import com.jo.submission.jetpackpro.data.model.api.Movie
+import com.jo.submission.jetpackpro.data.model.api.TvShow
 import com.jo.submission.jetpackpro.ui.base.BaseViewModel
 import com.jo.submission.jetpackpro.utils.rx.SchedulerProvider
 

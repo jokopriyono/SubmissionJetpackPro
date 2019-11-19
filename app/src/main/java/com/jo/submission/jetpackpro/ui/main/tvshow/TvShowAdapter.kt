@@ -7,10 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jo.submission.jetpackpro.R
-import com.jo.submission.jetpackpro.model.TvShowModel
+import com.jo.submission.jetpackpro.data.model.api.TvShow
 
 class TvShowAdapter(
-    private val tvShow: TvShowModel,
+    private val tvShow: List<TvShow>,
     private val tvShowListener: TvShowListener
 ) : RecyclerView.Adapter<TvShowAdapter.ViewHolder>() {
 
@@ -19,10 +19,10 @@ class TvShowAdapter(
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = tvShow.results.size
+    override fun getItemCount(): Int = tvShow.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val m = tvShow.results[position]
+        val m = tvShow[position]
         holder.txtTitle.text = m.name
         holder.txtDesc.text = m.overview
         holder.txtDate.text = m.firstAirDate

@@ -1,71 +1,53 @@
 package com.jo.submission.jetpackpro.ui.main
 
-import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
 import com.jo.submission.jetpackpro.BuildConfig
-import com.jo.submission.jetpackpro.R
 import com.jo.submission.jetpackpro.data.DataManager
 import com.jo.submission.jetpackpro.data.model.api.MoviesRequest
 import com.jo.submission.jetpackpro.data.model.api.MoviesResponse
-import com.jo.submission.jetpackpro.model.MoviesModel
-import com.jo.submission.jetpackpro.model.TvShowModel
+import com.jo.submission.jetpackpro.data.model.api.TvShowRequest
+import com.jo.submission.jetpackpro.data.model.api.TvShowResponse
 import com.jo.submission.jetpackpro.ui.base.BaseViewModel
 import com.jo.submission.jetpackpro.utils.rx.SchedulerProvider
-import java.nio.charset.Charset
-
 
 class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvider) :
     BaseViewModel<MainNavigator>(dataManager, schedulerProvider) {
 
     init {
         fetchMoviesFromRemote()
+        fetchTvShowsFromRemote()
     }
 
-    var moviess = MutableLiveData<MoviesResponse?>(null)
+    var movies: MutableLiveData<MoviesResponse?> = MutableLiveData()
+    var tvShows: MutableLiveData<TvShowResponse?> = MutableLiveData()
 
-    lateinit var movies: MoviesModel
-
-    lateinit var tvShow: TvShowModel
-    fun setupResources(resources: Resources) {
-        this.movies = loadMovies(resources)
-        this.tvShow = loadTvShow(resources)
-    }
-
-    private fun fetchMoviesFromRemote() {
+    fun fetchMoviesFromRemote() {
         val request = MoviesRequest.GetPopularMovies(apiKey = BuildConfig.API_KEY)
+        val dispose = dataManager.getPopularMovies(request)
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .doOnSuccess {
+                movies.postValue(it)
+            }
+            .doOnError {
+                getNavigator()?.handleError(it)
+            }
+            .subscribe()
 
-        compositeDisposable.add(
-            dataManager.getPopularMovies(request)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe { moviesResponse: MoviesResponse?, throwable: Throwable? ->
-                    moviess.value = moviesResponse
-                    getNavigator()?.handleError(throwable)
-                }
-        )
+        compositeDisposable.add(dispose)
+
     }
 
-    private fun loadMovies(resources: Resources): MoviesModel {
-        val resRaw = resources.openRawResource(R.raw.movies)
-        val size = resRaw.available()
-        val buffer = ByteArray(size)
-        resRaw.read(buffer)
-        resRaw.close()
+    fun fetchTvShowsFromRemote() {
+        val request = TvShowRequest.GetPopularTvShow(apiKey = BuildConfig.API_KEY)
+        val dispose = dataManager.getPopularTvShow(request)
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe { tvShowResponse: TvShowResponse?, throwable: Throwable? ->
+                tvShows.postValue(tvShowResponse)
+                getNavigator()?.handleError(throwable)
+            }
 
-        val json = String(buffer, Charset.defaultCharset())
-        return Gson().fromJson(json, MoviesModel::class.java)
+        compositeDisposable.add(dispose)
     }
-
-    private fun loadTvShow(resources: Resources): TvShowModel {
-        val resRaw = resources.openRawResource(R.raw.tvshow)
-        val size = resRaw.available()
-        val buffer = ByteArray(size)
-        resRaw.read(buffer)
-        resRaw.close()
-
-        val json = String(buffer, Charset.defaultCharset())
-        return Gson().fromJson(json, TvShowModel::class.java)
-    }
-
 }

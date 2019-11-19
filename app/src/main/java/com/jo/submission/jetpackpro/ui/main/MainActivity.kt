@@ -32,7 +32,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
         super.onCreate(savedInstanceState)
 
         mMainViewModel.setNavigator(this)
-        mMainViewModel.setupResources(resources)
 
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(

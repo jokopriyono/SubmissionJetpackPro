@@ -4,9 +4,9 @@ package com.jo.submission.jetpackpro.ui.detail
 import android.os.Bundle
 import com.jo.submission.jetpackpro.BR
 import com.jo.submission.jetpackpro.R
+import com.jo.submission.jetpackpro.data.model.api.Movie
+import com.jo.submission.jetpackpro.data.model.api.TvShow
 import com.jo.submission.jetpackpro.databinding.ActivityDetailBinding
-import com.jo.submission.jetpackpro.model.Movie
-import com.jo.submission.jetpackpro.model.TvShow
 import com.jo.submission.jetpackpro.ui.base.BaseActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
